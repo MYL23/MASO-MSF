@@ -63,7 +63,7 @@ def getFinalPred(lst, prob):
     return truelabel
 
 
-def getCorrect(data):
+def ObjectDecisionFusion(data):
     predictlabel = data.argmax(dim=1).tolist()
     probability = torch.max(data, 1)[0].tolist()
     k = 0
@@ -104,7 +104,7 @@ def testModel(net, test_iter, criterion, device, condition, num_classes):
             loss = criterion(output, y_convert)
             lossValue += loss.data.item()
             total += y.size(0)
-            maxLabel = getCorrect(output)
+            maxLabel = ObjectDecisionFusion(output)
             y = y.cpu()
             correctNum = (maxLabel == y).sum().item()
             correct += correctNum
