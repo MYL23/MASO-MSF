@@ -1,19 +1,5 @@
 import torch
-from torch import nn
 import numpy as np
-import os
-import itertools
-import time
-import matplotlib.pyplot as plt
-import pickle
-import torch.utils.data as Data
-from sklearn.model_selection import train_test_split
-import gc
-import re
-from random import choice
-import torch.optim as optim
-from tensorboardX import SummaryWriter
-import torchvision.transforms as transforms
 
 OBJECT_K = 6
 

@@ -1,20 +1,8 @@
-# bacth:16 lr=0.001
 import torch
 from torch import nn
-import numpy as np
 import os
-import itertools
 import time
-import matplotlib.pyplot as plt
-import pickle
-import torch.utils.data as Data
-from sklearn.model_selection import train_test_split
-import gc
-import re
-from random import choice
-import torch.optim as optim
 from tensorboardX import SummaryWriter
-import torchvision.transforms as transforms
 from MainModel import MASO_MSF
 from DataLoader import load_dataset
 from PrintMetricInformation import printMetrics
@@ -24,8 +12,6 @@ DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
 OBJECT_K = 6
 
 os.chdir(r'/home/kwan30902/Workspace/myl/multiAttrScale/Data/Revision/')
-
-writer = SummaryWriter('runs/temp')
 
 
 def getExpandLabel(data):
@@ -71,11 +57,6 @@ def trainModel(net, train_iter, test_iter, criterion, optimizer, num_epochs, dev
         record_test.append([t2[0], t2[1]])
         confusion.append(t2[2])
 
-        writer.add_scalars('epoch/loss', {'train': t1[0], 'test': t2[0]}, epoch)
-        writer.add_scalars('epoch/accuracy', {'train': t1[1], 'test': t2[1]},
-                           epoch)
-        writer.add_scalar('epoch/lr', optimizer.state_dict()['param_groups'][0]['lr'],
-                          epoch)
         print("--- cost time: {:.4f}s ---".format(time.time() - start))
 
     return record_train, record_test, confusion

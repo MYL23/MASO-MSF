@@ -4,6 +4,8 @@ import numpy as np
 import pickle
 
 DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
+OBJECT_K = 6
+
 
 class ChannelAttention(nn.Module):
     def __init__(self, in_channel, ratio):
@@ -23,6 +25,7 @@ class ChannelAttention(nn.Module):
         x_weight = self.excitation(x_sq)
         out = x * x_weight
         return out
+
 
 class ResidualBlock(nn.Module):
     def __init__(self, nin, nout, size, stride=1, shortcut=True, ratioValue=16):
@@ -87,22 +90,16 @@ def processSamples(dataSample):
                                         dataSample.shape[4])
 
 
-valueFile1 = r'/home/kwan30902/Workspace/myl/multiAttrScale/Data/mediumFiles/normalizeValue0.01_6M.pickle'
-with open(valueFile1, 'rb') as f:
-    normalizeValue1 = pickle.load(f)
-valueFile2 = r'/home/kwan30902/Workspace/myl/multiAttrScale/Data/mediumFiles/normalizeValue0.05_6M.pickle'
-with open(valueFile2, 'rb') as f:
-    normalizeValue2 = pickle.load(f)
-valueFile3 = r'/home/kwan30902/Workspace/myl/multiAttrScale/Data/mediumFiles/normalizeValue0.2_6M.pickle'
-with open(valueFile3, 'rb') as f:
-    normalizeValue3 = pickle.load(f)
+valueFile = r'/..'  # normalized parameters for MASO data: mean and standard deviation
+with open(valueFile, 'rb') as f:
+    normalizeValue = pickle.load(f)
 
 
 def normlize(data, value):  # data batch*9*16*16 value:9*4
     dataArray = data.cpu().numpy()
     for k in range(len(dataArray[0])):
         condlist = [dataArray[:, k, :, :] != 0]
-        choicelist = [(dataArray[:, k, :, :] - value[k][2]) / value[k][3]]
+        choicelist = [(dataArray[:, k, :, :] - value[k][0]) / value[k][1]]  # [0]:mean [1]:stand deviation
         dataArray[:, k, :, :] = np.select(condlist, choicelist)
         del condlist, choicelist
     result = torch.from_numpy(dataArray).to(DEVICE)
@@ -128,16 +125,12 @@ class ScaleAttention(nn.Module):
         return x_weight
 
 
-def getExpandData(globalfeatures):
+def processGlobal(globalfeatures):  # share the global attributes
     expandGlobal = []
     globaldata = globalfeatures.cpu().tolist()
     for k in range(len(globaldata)):
-        expandGlobal.append(globaldata[k])
-        expandGlobal.append(globaldata[k])
-        expandGlobal.append(globaldata[k])
-        expandGlobal.append(globaldata[k])
-        expandGlobal.append(globaldata[k])
-        expandGlobal.append(globaldata[k])
+        for j in range(OBJECT_K):
+            expandGlobal.append(globaldata[k])
     expandGlobal = torch.tensor(expandGlobal).type(torch.FloatTensor).to(DEVICE)
     return expandGlobal
 
@@ -179,15 +172,15 @@ class mergeScales(nn.Module):
 
     def forward(self, x1, x2, x3, x4):
         # For scale1:ACFM
-        input1 = normlize(processSamples(x1), normalizeValue1)
-        output1 = self.moduleForScale1(input1)  # bacth*64*8*8
+        input1 = normlize(processSamples(x1), normalizeValue)
+        output1 = self.moduleForScale1(input1)
 
         # For scale2:ACFM
-        input2 = normlize(processSamples(x2), normalizeValue2)
+        input2 = normlize(processSamples(x2), normalizeValue)
         output2 = self.moduleForScale2(input2)
 
         # For scale3:ACFM
-        input3 = normlize(processSamples(x3), normalizeValue3)  # batch*9*32*32
+        input3 = normlize(processSamples(x3), normalizeValue)
         output3 = self.moduleForScale3(input3)
 
         # SFFM:Scale Feature Fusion Module
@@ -204,7 +197,7 @@ class mergeScales(nn.Module):
         scale_weight_fusion = self.attentionForScales(scale_fusion)
 
         # Additional Global Attributes Fusion
-        global_attr = getExpandData(x4)  # bacth*13
+        global_attr = processGlobal(x4)
         attr_fusion = torch.cat([scale_weight_fusion, global_attr], dim=1)
 
         # finalout
@@ -229,4 +222,3 @@ class mergeScales(nn.Module):
 def MASO_MSF(num_channel, num_classes, value_ratio):
     return mergeScales(in_channel_scale1=num_channel, in_channel_scale2=num_channel, in_channel_scale3=num_channel,
                        classes=num_classes, ratio=value_ratio)
-

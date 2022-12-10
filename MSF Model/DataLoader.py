@@ -19,9 +19,9 @@ class myDataSet(Data.Dataset):
         data = pickle.load(file)
         # 处理
         data1 = torch.tensor(data[0]).type(torch.FloatTensor)  # scale1 [n*object_k*num_channel*Wm*Hm]
-        data2 = torch.tensor(data[1]).type(torch.FloatTensor)  # scale2
-        data3 = torch.tensor(data[2]).type(torch.FloatTensor)  # scale3
-        data4 = torch.tensor(data[3]).type(torch.FloatTensor)  # global attributes
+        data2 = torch.tensor(data[1]).type(torch.FloatTensor)  # scale2 [n*object_k*num_channel*Wm*Hm]
+        data3 = torch.tensor(data[2]).type(torch.FloatTensor)  # scale3 [n*object_k*num_channel*Wm*Hm]
+        data4 = torch.tensor(data[3]).type(torch.FloatTensor)  # global attributes [n*num_global]
 
         target = torch.tensor(data[4]).type(torch.LongTensor)
         if self.transform is not None:
@@ -51,7 +51,7 @@ transform_train = transforms.Compose([
 
 def load_dataset(batch_size):
     # print("------- data START---------")
-    filename = r'/home/kwan30902/Workspace/myl/multiAttrScale/Data/mediumFiles/SegmentsPtsModes.pickle'
+    filename = r'/..'#from step 2
     with open(filename, 'rb') as f:
         pts, modes = pickle.load(f)
     del pts
@@ -61,7 +61,7 @@ def load_dataset(batch_size):
     trainX_index, testX_index, trainY, testY = train_test_split(index, modes, test_size=0.2, random_state=1,
                                                                 stratify=modes)  # base on modes,for balance
 
-    sample_roots = r'/home/kwan30902/Workspace/myl/multiAttrScale/Data/mediumFiles/samples/6M32GF/'
+    sample_roots = r'/..'# sample files, each sample corresponds to one file
     train_index_files = getIndexOfFiles(sample_roots, trainX_index)
     test_index_files = getIndexOfFiles(sample_roots, testX_index)
     train_set = myDataSet(train_index_files, transform_train)
