@@ -13,7 +13,7 @@ The folder contains the code related to constructing the Multi-Attribute-Scale-O
 (4) ComputeAttributes: local motion attributes computation. 
 
 ## MSF Model
-The folder contains the code related to the Multi-Stage Fusion Model (MSF), which consists of three major files:
+The folder contains the code related to the Multi-Stage Fusion Model (MSF), which consists of three major files:  
 (1) DataLoader: samples input and data augmentation.  
 (2) MainModel: the main structure of the MSF model.  
 (3) Train: model training.    
