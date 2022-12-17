@@ -9,7 +9,7 @@ Download [GeoLife](https://www.microsoft.com/en-us/download/details.aspx?id=5236
 The folder contains the code related to constructing the Multi-Attribute-Scale-Object (MASO) structure based on the GeoLife dataset, which consists of four main processing files:  
 (1) MatchTrajectoryLabel: match trajectories with the corresponding transportation modes.  
 (2) SplitSegment: split the trajectory to segments.  
-(3) CropProject: segment cropping and projection. 
+(3) CropProject: segment cropping and projection.   
 (4) ComputeAttributes: local motion attributes computation. 
 
 ## MSF Model
