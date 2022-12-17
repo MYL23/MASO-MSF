@@ -50,7 +50,7 @@ def getFinalPred(lst, prob):
 
     a = [k for k, v in countFreq.items() if v == highest]  # [0,1]
     if len(a) == 1:
-        truelabel = max(lst, default='列表为空', key=lambda v: lst.count(v))
+        truelabel = max(lst, default='None', key=lambda v: lst.count(v))
     elif len(a) == OBJECT_K:
         truelabel = lst[getFullMaxIndex(prob)]
     else:
