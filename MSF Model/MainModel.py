@@ -139,11 +139,11 @@ class mergeScales(nn.Module):
     def __init__(self, in_channel_scale1, in_channel_scale2, in_channel_scale3, classes, ratio):
         super(mergeScales, self).__init__()
         self.moduleForScale1 = AttrChannelFusion(in_channel=in_channel_scale1, out_channel1=32, out_channel2=64,
-                                                 ratio=ratio)  # 0.005*32
+                                                 ratio=ratio)  
         self.moduleForScale2 = AttrChannelFusion(in_channel=in_channel_scale2, out_channel1=32, out_channel2=64,
-                                                 ratio=ratio)  # 0.05
+                                                 ratio=ratio) 
         self.moduleForScale3 = AttrChannelFusion(in_channel=in_channel_scale3, out_channel1=32, out_channel2=64,
-                                                 ratio=ratio)  # 0.1
+                                                 ratio=ratio) 
         self.FCLayerForOut = nn.Sequential(
             nn.Linear(128 * 3 + 36, 32),
             nn.LeakyReLU(inplace=True),
