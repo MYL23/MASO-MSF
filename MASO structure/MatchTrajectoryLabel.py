@@ -52,11 +52,10 @@ for folder in allFolder:
         labelPath = pathFile + folder + '/labels.txt'
         with open(labelPath, 'r', encoding='utf-8') as f:
             labelOneUser = []
-            # 筛选条件
             label = list(map(lambda x: x.rstrip('\r\n').split('\t'), f))
             labelSplit = filter(lambda x: len(x) == 3 and x[2] in mode, label)
             for row in labelSplit:
-                labelOneUser.append([dateConvert(row[0]), dateConvert(row[1]), modeIndex[row[2]]])  # 时间格式转换
+                labelOneUser.append([dateConvert(row[0]), dateConvert(row[1]), modeIndex[row[2]]])  
         labelOneUser = np.array(labelOneUser)
         labelAllUser.append(labelOneUser)
 
