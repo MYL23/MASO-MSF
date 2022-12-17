@@ -11,7 +11,7 @@ from Test import testModel
 DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
 OBJECT_K = 6
 
-os.chdir(r'/home/kwan30902/Workspace/myl/multiAttrScale/Data/Revision/')
+os.chdir(r'/..')
 
 
 def getExpandLabel(data):
