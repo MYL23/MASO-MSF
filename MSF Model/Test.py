@@ -46,9 +46,9 @@ def getFinalPred(lst, prob):
     countFreq = {}
     for key in lst:
         countFreq[key] = countFreq.get(key, 0) + 1
-    highest = max(countFreq.values())  # 3
+    highest = max(countFreq.values()) 
 
-    a = [k for k, v in countFreq.items() if v == highest]  # [0,1]
+    a = [k for k, v in countFreq.items() if v == highest] 
     if len(a) == 1:
         truelabel = max(lst, default='None', key=lambda v: lst.count(v))
     elif len(a) == OBJECT_K:
