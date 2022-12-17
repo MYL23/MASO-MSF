@@ -1,4 +1,4 @@
-# step 3: segment cropping and project segment to img
+# step 3: segment cropping and projection
 
 import os
 import numpy as np
