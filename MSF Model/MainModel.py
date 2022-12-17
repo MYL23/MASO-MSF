@@ -95,7 +95,7 @@ with open(valueFile, 'rb') as f:
     normalizeValue = pickle.load(f)
 
 
-def normlize(data, value):  # data batch*9*16*16 value:9*4
+def normlize(data, value):  
     dataArray = data.cpu().numpy()
     for k in range(len(dataArray[0])):
         condlist = [dataArray[:, k, :, :] != 0]
@@ -151,21 +151,21 @@ class mergeScales(nn.Module):
             nn.Linear(32, classes)
         )
         self.FCLayerForScale1 = nn.Sequential(
-            nn.Linear(64 * 8 * 8, 512),  # 大小待确定8
+            nn.Linear(64 * 8 * 8, 512), 
             nn.LeakyReLU(inplace=True),
-            nn.Linear(512, 128),  # 大小待确定 4
+            nn.Linear(512, 128),  
             nn.LeakyReLU(inplace=True),
         )
         self.FCLayerForScale2 = nn.Sequential(
-            nn.Linear(64 * 8 * 8, 512),  # 大小待确定8
+            nn.Linear(64 * 8 * 8, 512),  
             nn.LeakyReLU(inplace=True),
-            nn.Linear(512, 128),  # 大小待确定 4
+            nn.Linear(512, 128),  
             nn.LeakyReLU(inplace=True),
         )
         self.FCLayerForScale3 = nn.Sequential(
-            nn.Linear(64 * 8 * 8, 512),  # 大小待确定8
+            nn.Linear(64 * 8 * 8, 512),  
             nn.LeakyReLU(inplace=True),
-            nn.Linear(512, 128),  # 大小待确定 4
+            nn.Linear(512, 128),  
             nn.LeakyReLU(inplace=True),
         )
         self.attentionForScales = ScaleAttention()
