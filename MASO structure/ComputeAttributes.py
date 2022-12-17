@@ -1,4 +1,4 @@
-# step 4: compute attribute based on GPS points in each pixel
+# step 4: compute attributes based on GPS points in each pixel
 
 import os
 import numpy as np
@@ -95,7 +95,7 @@ def splitPixelsPts(pts):
 def fillPts(filling, ptsData, num):
     oneSplit = copy.deepcopy(filling)
     if oneSplit[-1][0:4] != ptsData[oneSplit[-1][5]].tolist():
-        print("********************* No match ***************")
+        print("********************* mismatch ***************")
     con = oneSplit[-1][4]
     if num == 1:
         if oneSplit[-1][5] + num > len(ptsData) - 1:
@@ -229,7 +229,7 @@ def calpixelsFeatures(imgPtsData, pts, modes):
 
             AveAbsDelSImg5.append(AveAbsDelSImg)
             MaxAbsDelSImg5.append(MaxAbsDelSImg)
-            MedianAbsDelSImg5.append(MedianAbsDelSImg)  # 5*32*32
+            MedianAbsDelSImg5.append(MedianAbsDelSImg)  
 
             aveAbsDelTurnImg5.append(aveAbsDelTurnImg)
             maxAbsDelTurnImg5.append(maxAbsDelTurnImg)
@@ -241,14 +241,14 @@ def calpixelsFeatures(imgPtsData, pts, modes):
 
         AveAbsDelSImgs.append(AveAbsDelSImg5)
         MaxAbsDelSImgs.append(MaxAbsDelSImg5)
-        MedianAbsDelSImgs.append(MedianAbsDelSImg5)  # N*5*32*32
+        MedianAbsDelSImgs.append(MedianAbsDelSImg5)  
 
         aveAbsDelTurnImgs.append(aveAbsDelTurnImg5)
         maxAbsDelTurnImgs.append(maxAbsDelTurnImg5)
         medianAbsDelTurnImgs.append(medianAbsDelTurnImg5)
 
     pixelsFea = [AveSImgs, MaxSImgs, MedianSImgs, AveAbsDelSImgs,
-                 MaxAbsDelSImgs, MedianAbsDelSImgs, aveAbsDelTurnImgs, maxAbsDelTurnImgs, medianAbsDelTurnImgs]  #
+                 MaxAbsDelSImgs, MedianAbsDelSImgs, aveAbsDelTurnImgs, maxAbsDelTurnImgs, medianAbsDelTurnImgs]  
 
     print("------calpiexelsFeatures DONE---------")
     return pixelsFea
