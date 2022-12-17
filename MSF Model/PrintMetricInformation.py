@@ -41,7 +41,7 @@ def getPRF1(confmatirx, num_classes):
         for j in range(len(confmatirx[i])):
             if i == j:
                 recall[i] = confmatirx[i][j] / np.sum(confmatirx, -1)[i]
-                precision[i] = confmatirx[i][j] / np.sum(confmatirx, 0)[i]  # 压缩hang，求每一列的和
+                precision[i] = confmatirx[i][j] / np.sum(confmatirx, 0)[i]  
                 correct += confmatirx[i][j]
     print("(3) the precision:", precision)
     print("(4) the recall:", recall)
