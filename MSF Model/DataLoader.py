@@ -17,7 +17,7 @@ class myDataSet(Data.Dataset):
     def __getitem__(self, index):
         file = open(self.dataFiles[index], 'rb')
         data = pickle.load(file)
-        # 处理
+ 
         data1 = torch.tensor(data[0]).type(torch.FloatTensor)  # scale1 [n*object_k*num_channel*Wm*Hm]
         data2 = torch.tensor(data[1]).type(torch.FloatTensor)  # scale2 [n*object_k*num_channel*Wm*Hm]
         data3 = torch.tensor(data[2]).type(torch.FloatTensor)  # scale3 [n*object_k*num_channel*Wm*Hm]
